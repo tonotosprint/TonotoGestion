@@ -264,6 +264,9 @@ try {
       }
 
       $parts = $relativePath.Split("/")
+      if ($parts[-1] -ieq ".env") {
+        throw "El paquete contiene un archivo .env no permitido. No se modificó la configuración local."
+      }
       $allowed = $parts[0] -in @("public", "scripts", "android") -or
         $relativePath -in @("server.js", "package.json", "package-lock.json", "README.md", ".env.example",
           "Iniciar Tonotos Gestion.bat", "Conectar Tonotos Gestion.bat", "Configurar HTTPS LAN.bat")

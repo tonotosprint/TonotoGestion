@@ -49,7 +49,7 @@ jobs:
                   path = pathlib.PurePosixPath(name)
                   if path.parts[0] not in root_files and path.parts[0] not in {"android", "public", "scripts"}:
                       continue
-                  if excluded_parts.intersection(path.parts) or path.name in {".env", "local.properties"}:
+                  if excluded_parts.intersection(path.parts) or path.name.lower() in {".env", "local.properties"}:
                       continue
                   if path.suffix == ".hprof":
                       continue
