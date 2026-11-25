@@ -1,0 +1,95 @@
+* { box-sizing: border-box; }
+
+@page { size: A4 portrait; margin: 8mm; }
+@page ticket { size: 80mm auto; margin: 4mm; }
+
+body {
+  margin: 0;
+  padding: 24px;
+  color: #171717;
+  background: #f2f3f7;
+  font: 11px Arial, Helvetica, sans-serif;
+}
+
+.receipt {
+  display: flex;
+  width: min(100%, 900px);
+  min-height: 1100px;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 24px 26px;
+  background: #fff;
+  box-shadow: 0 5px 30px #1d254019;
+}
+
+.receipt-ticket { page: ticket; width: 72mm; min-height: 0; padding: 0; box-shadow: none; }
+.receipt-ticket .receipt-header { grid-template-columns: 1fr; gap: 8px; min-height: 0; }
+.receipt-ticket .document-type { min-height: 120px; }
+.receipt-ticket .billing-period { grid-template-columns: 1fr; }
+.receipt-ticket .billing-period span + span { border-top: 1px solid #aaa; border-left: 0; }
+.receipt-ticket .receipt-bottom { align-items: stretch; flex-direction: column; }
+.receipt-ticket .totals { width: 100%; }
+.receipt-ticket table { table-layout: fixed; }
+.receipt-ticket th, .receipt-ticket td { padding: 4px 2px; font-size: 7px; }
+.receipt-ticket .receipt-copy { font-size: 8px; }
+
+.receipt-copy {
+  margin-bottom: 6px;
+  border: 1px solid #4a4a4a;
+  font-size: 9px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.receipt-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 22px;
+  min-height: 174px;
+  padding: 10px 4px 13px;
+}
+
+.seller { align-self: end; min-width: 0; }
+.seller-logo { display: block; max-width: 125px; max-height: 82px; margin: 0 auto 8px; object-fit: contain; }
+.seller-name { display: block; margin-bottom: 8px; font-size: 16px; text-align: center; }
+.seller-data { font-size: 10px; line-height: 1.55; overflow-wrap: anywhere; }
+.document-type { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-top: 9px; }
+.document-mark { position: absolute; top: -9px; left: 0; display: grid; width: 38px; height: 52px; place-items: center; border: 1px solid #4a4a4a; font-size: 24px; font-weight: 700; }
+.document-type h1 { margin: 6px 0 15px; font-size: 25px; font-weight: 500; }
+.receipt-meta { width: 100%; align-self: flex-end; font-size: 9px; line-height: 1.65; }
+.billing-period { display: grid; grid-template-columns: 1fr 1fr 1fr; border: 1px solid #777; font-size: 9px; }
+.billing-period span { padding: 5px 7px; }
+.billing-period span + span { border-left: 1px solid #aaa; }
+
+.customer-data { min-height: 83px; padding: 9px 4px 11px; font-size: 11px; line-height: 1.6; }
+.customer-data strong { font-weight: 400; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { padding: 5px 6px; border: 1px solid #8c8c8c; background: #d7d7d7; font-size: 8px; font-weight: 400; text-align: center; }
+td { padding: 6px 5px; font-size: 9px; text-align: right; }
+td:first-child, td:nth-child(2) { text-align: left; }
+.receipt-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-top: auto; padding-top: 12px; border-top: 1px solid #999; }
+.fiscal-notice { max-width: 360px; color: #555; font-size: 8px; line-height: 1.5; }
+.totals { width: min(100%, 330px); }
+.receipt-payment { display: flex; justify-content: space-between; gap: 15px; padding: 5px 7px; border-bottom: 1px solid #ddd; font-size: 9px; }
+.totals > div:not(.receipt-payment) { display: flex; justify-content: space-between; gap: 12px; padding: 6px 7px; }
+.receipt-total { margin-top: 3px; border: 1px solid #666; background: #d7d7d7; font-size: 10px; }
+.receipt-total strong { font-size: 11px; }
+.actions { margin-top: 18px; text-align: center; }
+.actions button { padding: 10px 18px; border: 0; border-radius: 6px; color: #fff; background: #3347d5; font-weight: 700; cursor: pointer; }
+
+@media print {
+  body { padding: 0; background: #fff; }
+  .receipt { width: 100%; min-height: 277mm; padding: 0; box-shadow: none; }
+  .actions { display: none; }
+}
+
+@media (max-width: 640px) {
+  body { padding: 10px; }
+  .receipt { min-height: 900px; padding: 14px; }
+  .receipt-header { grid-template-columns: 1fr; gap: 12px; }
+  .document-type { min-height: 135px; }
+  .document-mark { left: 0; }
+  .billing-period { grid-template-columns: 1fr; }
+  .billing-period span + span { border-top: 1px solid #aaa; border-left: 0; }
+  .receipt-bottom { align-items: stretch; flex-direction: column; }
+}

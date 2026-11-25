@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Administración global · Tonotos Gestión</title>
+    <link rel="stylesheet" href="/styles.css?v=20261115-3">
+    <script src="/platform.js?v=20261027-3" defer></script>
+  </head>
+  <body>
+    <main class="platform-shell">
+      <header class="platform-header">
+        <a class="brand" href="/" aria-label="Tonotos Gestión">
+          <span>Tonotos <span class="brand-light">Gestión</span></span>
+        </a>
+        <span class="eyebrow">CONSOLA DE ADMINISTRACIÓN GLOBAL</span>
+      </header>
+      <section id="platform-login" class="data-card platform-login">
+        <h1>Administración de empresas</h1>
+        <p class="platform-copy">Ingresá con las credenciales globales configuradas en el servidor.</p>
+        <form id="platform-login-form" class="form-stack">
+          <label for="platform-email">Correo de administración</label>
+          <input id="platform-email" name="email" type="email" autocomplete="username" required>
+          <label for="platform-password">Contraseña</label>
+          <input id="platform-password" name="password" type="password" autocomplete="current-password" required>
+          <button class="button button-primary" type="submit">Ingresar</button>
+          <p id="platform-login-error" class="form-error" role="alert"></p>
+        </form>
+      </section>
+      <section id="platform-app" hidden>
+        <div class="page-heading">
+          <div><span class="eyebrow">SUSCRIPCIONES Y ACCESO</span><h1>Empresas</h1>
+            <p>Creá empresas y usuarios, y gestioná sus estados de suscripción y fechas de vencimiento.</p></div>
+          <button id="platform-logout" class="button button-secondary" type="button">Cerrar sesión</button>
+        </div>
+        <section class="data-card platform-status">
+          <strong id="platform-firebase-status">Comprobando Firebase…</strong>
+          <span id="platform-firebase-detail" class="field-help"></span>
+        </section>
+        <section id="platform-overview" class="platform-overview" aria-label="Resumen de empresas"></section>
+        <section class="data-card">
+          <div class="panel-header"><div class="panel-heading"><h2>Crear empresa</h2>
+            <p>Se crea el espacio exclusivo, una cuenta administradora y un catálogo inicial editable según los rubros elegidos.</p></div></div>
+          <form id="platform-company-form" class="platform-form">
+            <div class="field"><label for="new-company-name">Empresa</label><input id="new-company-name" class="field-control" name="company" maxlength="120" required></div>
+            <fieldset class="field field-full platform-industry-field">
+              <legend>Rubros de especialidad</legend>
+              <span class="field-help">Elegí uno o varios. Se precargan al menos 200 productos por rubro, sin stock ni precios, para que puedas editarlos.</span>
+              <div class="platform-industry-options">
+                <label><input type="checkbox" name="industry" value="almacen"> Almacén</label>
+                <label><input type="checkbox" name="industry" value="ferreteria"> Ferretería</label>
+                <label><input type="checkbox" name="industry" value="indumentaria"> Indumentaria</label>
+                <label><input type="checkbox" name="industry" value="bazar"> Bazar</label>
+                <label><input type="checkbox" name="industry" value="libreria"> Librería</label>
+                <label><input type="checkbox" name="industry" value="perfumeria"> Perfumería</label>
+                <label><input type="checkbox" name="industry" value="electronica"> Electrónica</label>
+                <label><input type="checkbox" name="industry" value="gastronomia"> Gastronomía</label>
+                <label><input type="checkbox" name="industry" value="imprenta"> Imprenta, gráfica e impresión digital</label>
+              </div>
+            </fieldset>
+            <div class="field"><label for="new-company-username">Usuario del administrador</label><input id="new-company-username" class="field-control" name="username" minlength="3" maxlength="32" required></div>
+            <div class="field"><label for="new-company-display-name">Nombre visible</label><input id="new-company-display-name" class="field-control" name="displayName" maxlength="80" placeholder="Opcional; por defecto, el usuario"></div>
+            <div class="field"><label for="new-company-password">Contraseña inicial (mínimo 8 caracteres)</label><input id="new-company-password" class="field-control" name="password" type="password" minlength="8" maxlength="128" required></div>
+            <div class="field"><label for="new-company-plan">Plan</label><input id="new-company-plan" class="field-control" name="plan" maxlength="40" value="standard" required></div>
+            <div class="field"><label for="new-company-until">Válida hasta (opcional)</label><input id="new-company-until" class="field-control" name="subscriptionUntil" type="date"></div>
+            <div class="field"><label for="new-company-status">Estado de suscripción</label><select id="new-company-status" class="field-control" name="status"><option value="active">Activo</option><option value="suspended">Suspendido</option><option value="cancelled">Cancelado</option></select></div>
+            <button class="button button-primary" type="submit">Crear empresa</button>
+            <p id="platform-company-error" class="form-error" role="alert"></p>
+          </form>
+        </section>
+        <section class="data-card">
+          <div class="panel-header"><div class="panel-heading"><h2>Clientes y suscripciones</h2>
+            <p>Al vencer la fecha de pago el acceso se bloquea y se muestra el aviso de pago. Suspendido y cancelado revocan las sesiones.</p></div>
+            <button id="platform-refresh" class="button button-secondary" type="button">Actualizar</button></div>
+          <div class="table-scroll"><table class="data-table">
+            <thead><tr><th>EMPRESA</th><th>PLAN</th><th>USUARIOS</th><th>ESTADO</th><th>VENCIMIENTO</th><th>ACCIONES</th></tr></thead>
+            <tbody id="platform-companies"></tbody>
+          </table></div>
+          <p id="platform-companies-error" class="form-error" role="alert"></p>
+        </section>
+        <section id="platform-users-section" class="data-card" hidden>
+          <div class="panel-header"><div class="panel-heading"><h2 id="platform-users-title">Usuarios</h2>
+            <p>Las cuentas usan usuario y contraseña, sin correo electrónico, y pertenecen únicamente a la empresa seleccionada.</p></div>
+            <button id="platform-close-users" class="button button-secondary" type="button">Cerrar</button></div>
+          <form id="platform-user-form" class="platform-form">
+            <div class="field"><label for="new-user-username">Usuario</label><input id="new-user-username" class="field-control" name="username" minlength="3" maxlength="32" required></div>
+            <div class="field"><label for="new-user-display-name">Nombre visible</label><input id="new-user-display-name" class="field-control" name="displayName" maxlength="80" placeholder="Opcional; por defecto, el usuario"></div>
+            <div class="field"><label for="new-user-password">Contraseña inicial</label><input id="new-user-password" class="field-control" name="password" type="password" minlength="8" maxlength="128" required></div>
+            <div class="field"><label for="new-user-role">Perfil</label><select id="new-user-role" class="field-control" name="role"><option value="admin">Admin</option><option value="manager">Gerente</option><option value="cashier">Cajero</option><option value="seller">Vendedor</option></select></div>
+            <button class="button button-primary" type="submit">Crear usuario</button>
+            <p id="platform-user-error" class="form-error" role="alert"></p>
+          </form>
+          <div class="table-scroll"><table class="data-table">
+            <thead><tr><th>CUENTA</th><th>PERFIL</th><th>CREADA</th><th>ACCIONES</th></tr></thead>
+            <tbody id="platform-users"></tbody>
+          </table></div>
+        </section>
+        <section class="data-card">
+          <div class="panel-header"><div class="panel-heading"><h2>Historial de administración</h2>
+            <p>Últimas acciones globales sobre empresas y cuentas.</p></div></div>
+          <div class="table-scroll"><table class="data-table">
+            <thead><tr><th>FECHA</th><th>ADMINISTRADOR</th><th>ACCIÓN</th><th>EMPRESA</th><th>DETALLE</th></tr></thead>
+            <tbody id="platform-audit"></tbody>
+          </table></div>
+        </section>
+      </section>
+      <div id="platform-toast" class="platform-toast" role="status" aria-live="polite"></div>
+    </main>
+  </body>
+</html>

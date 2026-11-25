@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="Gestioná ventas, compras y stock de tu empresa desde un solo lugar.">
+    <title>Tonotos Gestión</title>
+    <link rel="icon" href="./logo-tonotos.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css?v=20261125-1">
+    <script src="./qrcode.min.js"></script>
+    <script src="./zxing-browser.min.js" defer></script>
+    <script src="./product-search.js?v=20261027-4"></script>
+    <script src="./app.js?v=20261115-3" defer></script>
+  </head>
+  <body>
+    <main id="launch-screen" class="launch-screen" aria-labelledby="launch-title">
+      <section class="launch-card">
+        <a class="brand" href="./index.html" aria-label="Tonotos Gestión">
+          <span class="brand-mark" aria-hidden="true"><img src="./logo-tonotos.png" alt=""></span>
+          <span>Tonotos <span class="brand-light">Gestión</span></span>
+        </a>
+        <div class="launch-mark" aria-hidden="true">↗</div>
+        <span class="eyebrow">INICIO DE TONOTOS GESTIÓN</span>
+        <h1 id="launch-title">Iniciá la aplicación para continuar.</h1>
+        <p id="launch-message" class="launch-description">Para usar el sistema, ejecutá el servidor. Abrir este archivo directamente no inicia la aplicación.</p>
+        <ol class="launch-steps">
+          <li>Abrí PowerShell en la carpeta <strong>tonotogestion2</strong>.</li>
+          <li>Ejecutá este comando:</li>
+        </ol>
+        <code class="launch-command">npm start</code>
+        <a class="button button-primary launch-link" href="http://127.0.0.1:3000">Abrir Tonotos Gestión <span aria-hidden="true">→</span></a>
+        <p class="launch-footnote">Dejá la ventana del servidor abierta mientras usás el sistema.</p>
+        <button id="launch-retry" class="launch-retry" type="button" data-action="retry-start" hidden>Intentar de nuevo</button>
+      </section>
+    </main>
+    <main id="auth-screen" class="auth-screen" hidden>
+      <section class="auth-brand-panel" aria-label="Tonotos Gestión">
+        <a class="brand brand-on-dark" href="/" aria-label="Tonotos Gestión, inicio">
+          <span class="brand-mark" aria-hidden="true"><img src="./logo-tonotos.png" alt=""></span>
+          <span>Tonotos <span class="brand-light">Gestión</span></span>
+        </a>
+        <div class="brand-story">
+          <span class="eyebrow eyebrow-light">GESTIÓN SIMPLE. CRECIMIENTO REAL.</span>
+          <h1>Tu negocio,<br>en buenas manos.</h1>
+          <p>Ventas, compras y stock conectados para que tengas siempre el control.</p>
+        </div>
+        <div class="brand-bottom">
+          <span class="brand-bottom-dot"></span>
+          <span>Toda tu operación. Un solo lugar.</span>
+        </div>
+        <div class="brand-decoration brand-decoration-one"></div>
+        <div class="brand-decoration brand-decoration-two"></div>
+      </section>
+      <section class="auth-form-panel">
+        <div class="auth-form-wrap">
+          <div class="auth-mobile-brand" aria-hidden="true">
+              <span class="brand-mark"><img src="./logo-tonotos.png" alt=""></span>
+            <span>Tonotos <span class="brand-light">Gestión</span></span>
+          </div>
+          <span id="auth-eyebrow" class="eyebrow">TU EMPRESA, MÁS ORGANIZADA</span>
+          <h2 id="auth-title">Qué bueno verte.</h2>
+          <p id="auth-description" class="auth-description">Ingresá a tu cuenta para continuar.</p>
+          <form id="login-form" class="form-stack" hidden>
+            <label for="login-username">Usuario</label>
+            <input id="login-username" name="username" type="text" autocomplete="username" placeholder="Tu usuario" required>
+            <label for="login-password">Contraseña</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Tu contraseña" required>
+            <button class="button button-primary button-wide" type="submit">Ingresar <span aria-hidden="true">→</span></button>
+            <p id="login-error" class="form-error" role="alert"></p>
+          </form>
+          <div class="auth-footnote"><span class="lock-icon" aria-hidden="true">●</span> La copia en Firestore depende de la configuración del servidor.</div>
+        </div>
+      </section>
+    </main>
+
+    <div id="app-screen" class="app-shell" hidden>
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-top">
+          <a class="brand" href="#" data-page="dashboard" aria-label="Tonotos Gestión, inicio">
+              <span class="brand-mark" aria-hidden="true"><img src="./logo-tonotos.png" alt=""></span>
+            <span>Tonotos<span class="brand-light">Gestión</span></span>
+          </a>
+            <button class="icon-button menu-toggle" type="button" data-action="toggle-sidebar" aria-label="Mostrar u ocultar menú" title="Mostrar u ocultar menú">☰</button>
+        </div>
+        <span class="workspace-badge"><span class="status-dot"></span> ESPACIO DE TRABAJO</span>
+        <div class="nav-section-label">MENÚ PRINCIPAL</div>
+        <nav class="primary-nav" aria-label="Menú principal">
+          <button class="nav-link is-active" type="button" data-page="dashboard" data-tooltip="Resumen"><span class="nav-icon" aria-hidden="true">◫</span> Resumen</button>
+          <button class="nav-link" type="button" data-page="dailySales" data-tooltip="Registro diario"><span class="nav-icon" aria-hidden="true">▤</span> Registro diario</button>
+          <button class="nav-link" type="button" data-page="sales" data-tooltip="Facturación"><span class="nav-icon" aria-hidden="true">▣</span> Facturación</button>
+          <button class="nav-link" type="button" data-page="cashRegister" data-tooltip="Caja"><span class="nav-icon" aria-hidden="true">▣</span> Caja</button>
+          <button class="nav-link" type="button" data-page="salesOrders" data-tooltip="Ventas"><span class="nav-icon" aria-hidden="true">↗</span> Ventas</button>
+          <button class="nav-link" type="button" data-page="quotes" data-tooltip="Presupuestos"><span class="nav-icon" aria-hidden="true">▧</span> Presupuestos</button>
+          <button class="nav-link" type="button" data-page="purchases" data-tooltip="Compras"><span class="nav-icon" aria-hidden="true">↙</span> Compras</button>
+          <button class="nav-link" type="button" data-page="products" data-tooltip="Productos y stock"><span class="nav-icon" aria-hidden="true">▦</span> Productos y stock</button>
+          <button class="nav-link" type="button" data-page="recipes" data-tooltip="Recetas"><span class="nav-icon" aria-hidden="true">◈</span> Recetas</button>
+          <button class="nav-link" type="button" data-page="labels" data-tooltip="Etiquetas"><span class="nav-icon" aria-hidden="true">▦</span> Etiquetas</button>
+          <button class="nav-link" id="customers-nav-link" type="button" data-page="customers" data-tooltip="Clientes"><span class="nav-icon" aria-hidden="true">♙</span> Clientes</button>
+          <button class="nav-link" type="button" data-page="accounts" data-tooltip="Cuenta corriente"><span class="nav-icon" aria-hidden="true">◷</span> Cuenta corriente</button>
+          <button class="nav-link" id="mobile-connect-nav-link" type="button" data-page="mobileConnect" data-tooltip="Conexión Móvil"><span class="nav-icon" aria-hidden="true">📱</span> Conexión Móvil</button>
+          <button class="nav-link" type="button" data-page="branches" data-tooltip="Sucursales"><span class="nav-icon" aria-hidden="true">⌂</span> Sucursales</button>
+          <button class="nav-link" id="receipt-nav-link" type="button" data-page="receiptSettings" data-tooltip="Comprobantes"><span class="nav-icon" aria-hidden="true">⚙</span> Comprobantes</button>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-support">
+          <div class="support-icon" aria-hidden="true">?</div>
+          <strong>¿Necesitás una mano?</strong>
+          <p>Revisá la información de esta versión.</p>
+          <a href="#alcance" data-action="show-scope">Conocer el alcance <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="sidebar-account">
+          <span class="avatar" id="sidebar-avatar">GC</span>
+          <span class="account-copy"><strong id="sidebar-email">Administrador</strong><small id="sidebar-company">Empresa</small><small id="sidebar-branch">Casa Central</small></span>
+          <button class="icon-button logout-button" type="button" data-action="logout" aria-label="Cerrar sesión" title="Cerrar sesión">⇥</button>
+        </div>
+      </aside>
+      <div id="sidebar-scrim" class="sidebar-scrim" data-action="close-sidebar"></div>
+      <section class="main-panel">
+        <header class="topbar">
+          <button class="icon-button mobile-menu-toggle" type="button" data-action="toggle-sidebar" aria-label="Abrir menú" title="Abrir menú">☰</button>
+          <div class="breadcrumb"><span>Gestión</span><span class="breadcrumb-separator">/</span><strong id="breadcrumb-current">Resumen</strong></div>
+          <div class="topbar-right">
+            <select id="branch-selector" class="field-control branch-selector" aria-label="Sucursal activa" hidden></select>
+            <span id="lan-address" class="lan-address" role="status" title="Dirección para conectar la aplicación móvil"></span>
+            <span id="connection-status" class="connection-status" role="status">En línea</span>
+            <span class="today-label"><span class="today-dot"></span> <span id="current-date"></span></span>
+            <span class="topbar-divider"></span>
+            <button class="icon-button theme-toggle" id="theme-toggle" type="button" data-action="toggle-theme" aria-label="Usar tema oscuro" title="Usar tema oscuro">☾</button>
+            <span class="topbar-user-avatar" id="topbar-avatar">GC</span>
+          </div>
+        </header>
+        <main id="page-content" class="page-content" tabindex="-1"></main>
+      </section>
+    </div>
+
+    <dialog id="modal" class="modal">
+      <form id="modal-form" class="modal-card">
+        <header class="modal-header">
+          <div>
+            <span class="eyebrow" id="modal-eyebrow">GESTIÓN</span>
+            <h2 id="modal-title"></h2>
+          </div>
+          <button class="icon-button modal-close" type="button" data-action="close-modal" aria-label="Cerrar ventana">×</button>
+        </header>
+        <div id="modal-body" class="modal-body"></div>
+        <footer id="modal-footer" class="modal-footer"></footer>
+      </form>
+    </dialog>
+    <dialog id="update-dialog" class="modal update-dialog" aria-labelledby="update-title">
+      <section class="modal-card">
+        <header class="modal-header">
+          <div>
+            <span class="eyebrow">NOVEDADES DEL SISTEMA</span>
+            <h2 id="update-title">Tonotos Gestión se actualizó</h2>
+          </div>
+        </header>
+        <div class="modal-body">
+          <p id="update-version" class="update-version"></p>
+          <p id="update-release-notes" class="update-release-notes"></p>
+          <div id="update-commits-section" class="update-commits-section" hidden>
+            <strong>Commits incluidos</strong>
+            <ul id="update-commits" class="update-commits"></ul>
+          </div>
+          <p id="update-commit-note" class="field-help" hidden></p>
+          <a id="update-release-link" class="update-release-link" target="_blank" rel="noopener noreferrer">Ver versión en GitHub ↗</a>
+        </div>
+        <footer class="modal-footer">
+          <button class="button button-primary" type="button" data-action="close-update-dialog">Entendido</button>
+        </footer>
+      </section>
+    </dialog>
+    <dialog id="camera-scanner-dialog" class="modal camera-scanner-dialog" aria-labelledby="camera-scanner-title">
+      <section class="modal-card">
+        <header class="modal-header">
+          <div>
+            <span class="eyebrow">LECTOR DE CÓDIGOS</span>
+            <h2 id="camera-scanner-title">Escaneá un producto</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" data-action="hide-camera-scanner" aria-label="Ocultar vista previa de la cámara">×</button>
+        </header>
+        <div class="modal-body">
+          <video id="camera-scanner-video" class="camera-scanner-video" playsinline muted></video>
+          <p id="camera-scanner-status" class="camera-scanner-status" role="status">Apuntá la cámara al código de barras.</p>
+        </div>
+        <footer class="modal-footer">
+          <button class="button button-secondary" type="button" data-action="stop-camera-scanner">Desactivar cámara</button>
+        </footer>
+      </section>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="online-verification-lock" class="online-verification-lock" role="alertdialog" aria-modal="true" aria-labelledby="online-verification-title" hidden>
+      <section class="online-verification-card">
+        <span class="online-verification-icon" aria-hidden="true">⌁</span>
+        <span class="eyebrow">VERIFICACIÓN EN LÍNEA</span>
+        <h1 id="online-verification-title">Conectá esta PC a internet</h1>
+        <p>Tonotos Gestión debe verificar la conexión con Firebase cada 72 horas. Mientras no se pueda completar la verificación, el sistema permanecerá bloqueado.</p>
+        <p id="online-verification-message" class="online-verification-message">Comprobando la conexión de esta PC con Firebase…</p>
+        <button id="online-verification-retry" class="button button-primary button-wide" type="button" data-action="retry-online-verification">Reintentar verificación</button>
+      </section>
+    </div>
+  </body>
+</html>

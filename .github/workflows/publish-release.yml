@@ -1,0 +1,63 @@
+name: Publish Tonotos Gestión release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Package application
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import subprocess
+          import zipfile
+
+          root_files = {
+              ".env.example",
+              "Conectar Tonotos Gestion.bat",
+              "Configurar HTTPS LAN.bat",
+              "Iniciar Tonotos Gestion.bat",
+              "README.md",
+              "package-lock.json",
+              "package.json",
+              "server.js",
+          }
+          excluded_parts = {
+              ".git",
+              ".github",
+              ".gradle",
+              "__pycache__",
+              "build",
+              "data",
+              "ignore",
+              "node_modules",
+          }
+          files = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+
+          with zipfile.ZipFile("tonotos-gestion.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+              for name in filter(None, files):
+                  path = pathlib.PurePosixPath(name)
+                  if path.parts[0] not in root_files and path.parts[0] not in {"android", "public", "scripts"}:
+                      continue
+                  if excluded_parts.intersection(path.parts) or path.name in {".env", "local.properties"}:
+                      continue
+                  if path.suffix == ".hprof":
+                      continue
+                  if pathlib.Path(name).is_file():
+                      archive.write(name, name)
+          PY
+
+      - name: Publish stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" tonotos-gestion.zip --title "Tonotos Gestión $GITHUB_REF_NAME" --generate-notes --verify-tag
